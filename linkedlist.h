@@ -15,9 +15,7 @@ class LinkedList {
     private:
     Node *head; // pointer for first node, null when empty list/no list
     public: 
-    LinkedList(){
-        head = NULL;
-    }
+    LinkedList();
     // addNode, deleteNode, getNode, printList, getCount, clearList, exists
     // construcot and destrucot to allocate and deallocate memory
     bool addNode(int, string*);
