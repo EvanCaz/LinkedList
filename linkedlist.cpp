@@ -13,7 +13,7 @@ LinkedList::LinkedList(){
 bool LinkedList::addNode(int id, string* ptr){ // needs to deterine if we are creating first node in list or just creating next one
     // if adding at end, next needs to be null, if at the start prev needs to be null
     // find duplicates
-    bool duplicate = false, sucess;
+    bool duplicate = false, sucess = false;
     if( id > -1 && !ptr->empty()){ // if id is 0 or greater and string is not empty...
         
         Node* newNode = new Node; // allocated memory for newnode struct
@@ -25,7 +25,7 @@ bool LinkedList::addNode(int id, string* ptr){ // needs to deterine if we are cr
             newNode->prev = NULL; // nothing before it
             newNode->next = NULL; // since its the first and only one
             sucess = true; 
-        } else if(head != NULL){ // if not the beggining...
+        } else { // if not the beggining...
             Node* current = head; // create postion marker and set postion as first node
             while(current->next != NULL){ // loop through list, comparing id's until thingy is found, if not found and no duplicate , add at end
                 if (current->data.id == id){ // if duplicate...
