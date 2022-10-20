@@ -13,13 +13,14 @@ LinkedList::LinkedList(){
 bool LinkedList::addNode(int id, string* ptr){ // needs to deterine if we are creating first node in list or just creating next one
     // if adding at end, next needs to be null, if at the start prev needs to be null
     // find duplicates
-    bool duplicate = false, sucess = false, found = false, beggining = false; // use flags to allocate memory after determining no duplicate
+    bool duplicate = false, sucess = false, found = false, beggining = false, firstNode = false, go = true; // use flags to allocate memory after determining no duplicate
     if( id > 0 && !ptr->empty()){ // if id is 0 or greater and string is not empty...
         Node* current = head; // set a marker
-        if (current == NULL){ // if we are at the begininng set a flag to true
+        if (current == NULL){ // if empty, set flag and dont run other code
             beggining = true;
         } else { // if not beginning
-            while(current->next != NULL){  // repeat until marker is last node if not found id
+            while(go == true){  // repeat until marker is last node if not found id
+            // what if one node list? does it still run
                 if (current->data.id == id){
                     duplicate = true;
                     sucess = false;
@@ -29,7 +30,12 @@ bool LinkedList::addNode(int id, string* ptr){ // needs to deterine if we are cr
                     found = true;
                     break;
                 }
-                current = current->next;
+                if(current->next == NULL){
+                    go = false;
+                } else {
+                    go = true;
+                    current = current->next;
+                }
             }
         }
             if(duplicate == false){
@@ -63,56 +69,83 @@ bool LinkedList::addNode(int id, string* ptr){ // needs to deterine if we are cr
     return sucess;
 }
 
-bool LinkedList::deleteNode(int id){ // wrong
+bool LinkedList::deleteNode(int id){ // wrong ish
     Node* current = head;
     bool success = false;
-    if(id > -1){
-        do
-        {
-            if(current->data.id == id){
-                delete current->prev;
-                delete current->next;
-                delete current;
-                success = true;
-                break;
-            }
-            current = current->next;
-        } while (current->next != NULL);
-    }
+    // if(id > -1){
+    //     do
+    //     {
+    //         if(current->data.id == id){
+    //             delete current->prev;
+    //             delete current->next;
+    //             delete current;
+    //             success = true;
+    //             break;
+    //         }
+    //         current = current->next;
+    //     } while (current->next != NULL);
+    // }
     return success;
 }
 
 bool LinkedList::getNode(int id, Data* data){
     Node* current = head;
-    bool success = false;
-    // while(current->next != NULL){
-    //     if(current->data.id == id){
-    //         data->data = current->data.data;
-    //         data->id = current->data.id;
-    //         success = true;
-    //     }
-    //     current = current->next;
-    // }
-    // if (success == false){
-    //     data->data = "";
-    //     data->id = -1;
-    // }
+    bool success = false, go = true;
+    if(current == NULL){
+        success = false;
+    } else {
+        while(go == true){
+            if(current->data.id == id){
+                success = true;
+                data->data = current->data.data;
+                data->id = current->data.id;
+                break;
+            }
+            if(current->next == NULL){
+                go = false;
+            } else {
+                go = true;
+                current = current->next;
+            }
+        }
+    }
     return success;
 }
 
 void LinkedList::printList(bool backward){
-    
+    Node* current = head;
+    bool go = true; // used to execute the while loop at least once and until the und, do while doesnt cut it
+    if(current == NULL){
+        return;
+    } else {
+        while(go == true){
+            std::cout << current->data.id << " : " << current->data.data << std::endl; // for printing last node
+            if(current->next == NULL){
+                go = false;
+            } else {
+                go = true;
+                current = current->next;
+            }
+        }
+        
+    }
 }
 
 int LinkedList::getCount(){
     Node* current = head;
     int nodes = 0;
+    bool go = true; // used to execute the while loop at least once and until the und, do while doesnt cut it
     if(current == NULL){
         nodes = 0;
     } else {
-        while (current->next != NULL){
+        while(go == true){
             nodes++;
-            current = current->next;
+            if(current->next == NULL){
+                go = false;
+            } else {
+                go = true;
+                current = current->next;
+            }
         }
     }
     return nodes;
