@@ -10,54 +10,72 @@ LinkedList::LinkedList(){
     head = NULL;
 }
 
-bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation error
-    bool duplicate = false, sucess = false, found = false, beggining = false, firstNode = false, go = true; // use flags to allocate memory after determining no duplicate
-    // "go" used to execute the while loop at least once and until the und, do while doesnt cut it
+bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation error, have not shortened with functions cuz idk where error is happening
+    bool sucess = false, duplicate = true;
     if( id > 0 && !ptr->empty()){ // if id is 0 or greater and string is not empty...
-        Node* current = head; // set a marker
-        if (current == NULL){ // if empty, set flag and dont run other code
-            beggining = true;
-        } else { // if not beginning, can create function and pass the whole thing and change bool varaibles by reference to be used here
-            while(go == true){  // repeat until marker is last node if not found id
-                if (current->data.id == id){
-                    duplicate = true;
-                    sucess = false;
-                    break;
-                }
-                if(current->data.id > id){
-                    found = true;
-                    break;
-                }
-                if(current->next == NULL){
-                    go = false;
-                } else {
-                    go = true;
-                    current = current->next;
-                }
+        Node* current = head; // set a mar  ker
+        while(current != NULL && current->next != NULL && current->data.id < id){
+            current = current->next;
+            if (current->data.id == id){
+                duplicate = true;
             }
         }
-            if(duplicate == false){
-                Node* newNode = new Node;
-                newNode->data.id = id;
-                newNode->data.data = *ptr;
-                if (beggining == true){ // adding new head, can create function
-                    head = newNode;
-                    newNode->prev = NULL;
-                    newNode->next = NULL;
-                    sucess = true;
-                } else if(beggining == false && found == true){ // found inside the list, can craete function
-                    newNode->next = current;
-                    newNode->prev = current->prev;
-                    current->prev->next = newNode;
-                    current->prev = newNode;
-                    sucess = true;
-                } else if (beggining == false && found == false){// adding tail, can craete function
-                    newNode->prev = current;
-                    newNode->next = NULL;
-                    current->next = newNode;
-                    sucess = true;
-                }
+        if(current == NULL){ // if head
+            sucess = true;
+            Node* newNode = new Node;
+            newNode->data.id = id;
+            newNode->data.data = *ptr;
+            head = newNode;
+            newNode->prev = NULL;
+            newNode->next = NULL;
+        }
+        if (duplicate == false){
+            sucess = true;
+            Node* newNode = new Node;
+            newNode->data.id = id;
+            newNode->data.data = *ptr;
+            if(current->prev == NULL && current->next != NULL){ // replace head
+                head = newNode;
+                newNode->prev = NULL;
+                newNode->next = current;
+                current->prev = newNode;
+                sucess = true;
             }
+            if(current->data.id > id){
+                newNode->next = current;
+                newNode->prev = current->prev;
+                current->prev->next = newNode;
+                current->prev = newNode;
+            }
+            if(current->next == NULL && current->prev != NULL){
+                current->next = newNode;
+                newNode->prev = current;
+                newNode->next = NULL;
+            }
+        }
+            //else if (current->data.id != id) {
+        //         sucess = true;
+        //         Node* newNode = new Node;
+        //         newNode->data.id = id;
+        //         newNode->data.data = *ptr;
+        //         if(current->prev == NULL){ // replace head
+        //             head = newNode;
+        //             newNode->prev = NULL;
+        //             newNode->next = current;
+        //             current->prev = newNode;
+        //         }
+        //         if(current->next == NULL){ // new tail
+        //             current->next = newNode;
+        //             newNode->prev = current;
+        //             newNode->next = NULL;
+        //         }
+        //         if(current->data.id > id){// add middle
+        //             newNode->next = current;
+        //             newNode->prev = current->prev;
+        //             current->prev->next = newNode;
+        //             current->prev = newNode;
+        //         }
+        //     }
     }
     return sucess;
 }
@@ -120,52 +138,45 @@ bool LinkedList::getNode(int id, Data* data){ // done
 }
 
 void LinkedList::printList(bool backward){ // needs shortenining
-    Node* current = head;
-    bool go = true; // used to execute the while loop at least once and until the und, do while doesnt cut it
-    if(current == NULL){
-        return;
-    } else {
-        while(go == true){
-            if(backward == false){
-                std::cout << current->data.id << " : " << current->data.data << std::endl; // for printing last node
-            }
-            if(current->next == NULL){
-                go = false;
-            } else {
-                go = true;
-                current = current->next;
-            }
-        }
-        go = true;
-        if(backward == true){
-            while(go == true) {
-                std::cout << current->data.id << " : " << current->data.data << std::endl; // for printing last node
-                if(current->prev == NULL){
-                    go = false;
-                } else {
-                    go = true;
-                    current = current->prev;
-                }
-            }
-        }
-    }
-}
+//     Node* current = head;
+//     bool go = true; // used to execute the while loop at least once and until the und, do while doesnt cut it
+//     if(current == NULL){
+//         return;
+//     } else {
+//         while(go == true){
+//             if(backward == false){
+//                 std::cout << current->data.id << " : " << current->data.data << std::endl; // for printing last node
+//             }
+//             if(current->next == NULL){
+//                 go = false;
+//             } else {
+//                 go = true;
+//                 current = current->next;
+//             }
+//         }
+//         go = true;
+//         if(backward == true){
+//             while(go == true) {
+//                 std::cout << current->data.id << " : " << current->data.data << std::endl; // for printing last node
+//                 if(current->prev == NULL){
+//                     go = false;
+//                 } else {
+//                     go = true;
+//                     current = current->prev;
+//                 }
+//             }
+//         }
+//     }
+ }
 
 int LinkedList::getCount(){ // done
     Node* current = head;
     int nodes = 0;
     bool go = true; // used to execute the while loop at least once and until the und, do while doesnt cut it
-    if(current == NULL){
-        nodes = 0;
-    } else {
-        while(go == true){
+    if(current != NULL){
+        while(current != NULL && current->next != NULL){
+            current = current->next;
             nodes++;
-            if(current->next == NULL){
-                go = false;
-            } else {
-                go = true;
-                current = current->next;
-            }
         }
     }
     return nodes;
