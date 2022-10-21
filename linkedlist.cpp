@@ -11,14 +11,11 @@ LinkedList::LinkedList(){
 }
 
 bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation error, have not shortened with functions cuz idk where error is happening
-    bool sucess = false, duplicate = true;
+    bool sucess = false;
     if( id > 0 && !ptr->empty()){ // if id is 0 or greater and string is not empty...
         Node* current = head; // set a mar  ker
         while(current != NULL && current->next != NULL && current->data.id < id){
             current = current->next;
-            if (current->data.id == id){
-                duplicate = true;
-            }
         }
         if(current == NULL){ // if head
             sucess = true;
@@ -28,8 +25,7 @@ bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation erro
             head = newNode;
             newNode->prev = NULL;
             newNode->next = NULL;
-        }
-        if (duplicate == false){
+        } else if (current->data.id != id){
             sucess = true;
             Node* newNode = new Node;
             newNode->data.id = id;
@@ -39,43 +35,17 @@ bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation erro
                 newNode->prev = NULL;
                 newNode->next = current;
                 current->prev = newNode;
-                sucess = true;
-            }
-            if(current->data.id > id){
+            }else if(current->data.id > id){
                 newNode->next = current;
                 newNode->prev = current->prev;
                 current->prev->next = newNode;
                 current->prev = newNode;
-            }
-            if(current->next == NULL && current->prev != NULL){
+            }else if(current->next == NULL && current->prev != NULL){
                 current->next = newNode;
                 newNode->prev = current;
                 newNode->next = NULL;
             }
         }
-            //else if (current->data.id != id) {
-        //         sucess = true;
-        //         Node* newNode = new Node;
-        //         newNode->data.id = id;
-        //         newNode->data.data = *ptr;
-        //         if(current->prev == NULL){ // replace head
-        //             head = newNode;
-        //             newNode->prev = NULL;
-        //             newNode->next = current;
-        //             current->prev = newNode;
-        //         }
-        //         if(current->next == NULL){ // new tail
-        //             current->next = newNode;
-        //             newNode->prev = current;
-        //             newNode->next = NULL;
-        //         }
-        //         if(current->data.id > id){// add middle
-        //             newNode->next = current;
-        //             newNode->prev = current->prev;
-        //             current->prev->next = newNode;
-        //             current->prev = newNode;
-        //         }
-        //     }
     }
     return sucess;
 }
