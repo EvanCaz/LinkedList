@@ -14,6 +14,8 @@
 class LinkedList {
     private:
     Node *head; // pointer for first node, null when empty list/no list
+    void insertHead(Node*, Node*);
+    void replaceHead(Node*, Node*, Node*);
     public: 
     LinkedList();
     // addNode, deleteNode, getNode, printList, getCount, clearList, exists

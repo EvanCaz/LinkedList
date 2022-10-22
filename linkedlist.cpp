@@ -14,41 +14,52 @@ bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation erro
     bool sucess = false;
     if( id > 0 && !ptr->empty()){ // if id is 0 or greater and string is not empty...
         Node* current = head; // set a mar  ker
-        while(current != NULL && current->next != NULL && current->data.id < id){
-            current = current->next;
-        }
-        if(current == NULL){ // if head
+        if(current == NULL){
             sucess = true;
             Node* newNode = new Node;
             newNode->data.id = id;
-            newNode->data.data = *ptr;
-            head = newNode;
-            newNode->prev = NULL;
-            newNode->next = NULL;
-        } else if (current->data.id != id){
-            sucess = true;
-            Node* newNode = new Node;
-            newNode->data.id = id;
-            newNode->data.data = *ptr;
-            if(current->prev == NULL && current->next != NULL){ // replace head
-                head = newNode;
-                newNode->prev = NULL;
-                newNode->next = current;
-                current->prev = newNode;
-            }else if(current->data.id > id){
-                newNode->next = current;
-                newNode->prev = current->prev;
-                current->prev->next = newNode;
-                current->prev = newNode;
-            }else if(current->next == NULL && current->prev != NULL){
-                current->next = newNode;
-                newNode->prev = current;
-                newNode->next = NULL;
-            }
+            newNode->data.data = *ptr; // repetitive
+            insertHead(head, newNode);
+            } else {
+                    while(current != NULL && current->next != NULL && current->data.id < id){
+                        current = current->next;
+                    }
+                    if(current->data.id != id){
+                        sucess = true;
+                        Node* newNode = new Node;
+                        newNode->data.id = id;
+                        newNode->data.data = *ptr; // repetitive
+                        if (current->prev == NULL){ // replacing head
+                            replaceHead(head, current, newNode);
+                        } else if (current->next == NULL){ // add tail
+                            current->next = newNode;
+                            newNode->next = NULL;
+                            newNode->prev = current;
+                        } else { // add midde
+                            newNode->next = current;
+                            newNode->prev = current->prev;
+                            current->prev->next = newNode;
+                            current->prev = newNode;
+                        }
+                    }
         }
     }
     return sucess;
 }
+
+void LinkedList::insertHead(Node* head, Node* newNode){
+    head = newNode;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+}
+
+void LinkedList::replaceHead(Node* head, Node* current, Node* newNode){
+    head = newNode;
+    newNode->prev = NULL;
+    newNode->next = current;
+    current->prev = newNode;
+}
+
 
 bool LinkedList::deleteNode(int id){ // does not work
     Node* current = head;
@@ -85,23 +96,17 @@ bool LinkedList::deleteNode(int id){ // does not work
 
 bool LinkedList::getNode(int id, Data* data){ // done
     Node* current = head;
-    bool success = false, go = true; // used to execute the while loop at least once and until the und, do while doesnt cut it
+    bool success = false; // used to execute the while loop at least once and until the und, do while doesnt cut it
     if(current == NULL){
         success = false;
     } else {
-        while(go == true){
+        while(current != NULL && success == false){
             if(current->data.id == id){
-                success = true;
                 data->data = current->data.data;
                 data->id = current->data.id;
-                break;
+                success = true;
             }
-            if(current->next == NULL){
-                go = false;
-            } else {
-                go = true;
-                current = current->next;
-            }
+            current = current->next;
         }
     }
     return success;
