@@ -13,13 +13,13 @@ LinkedList::LinkedList(){
 bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation error, have not shortened with functions cuz idk where error is happening
     bool sucess = false;
     if( id > 0 && !ptr->empty()){ // if id is 0 or greater and string is not empty...
-        Node* current = head; // set a mar  ker
+        Node* current = head; // set a marker
         if(current == NULL){
             sucess = true;
             Node* newNode = new Node;
             newNode->data.id = id;
             newNode->data.data = *ptr; // repetitive
-            insertHead(head, newNode);
+            insertHead(newNode);
             } else {
                     while(current != NULL && current->next != NULL && current->data.id < id){
                         current = current->next;
@@ -30,35 +30,45 @@ bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation erro
                         newNode->data.id = id;
                         newNode->data.data = *ptr; // repetitive
                         if (current->prev == NULL){ // replacing head
-                            replaceHead(head, current, newNode);
+                            replaceHead(current, newNode);
                         } else if (current->next == NULL){ // add tail
-                            current->next = newNode;
-                            newNode->next = NULL;
-                            newNode->prev = current;
+                            insertTail(current, newNode);
                         } else { // add midde
-                            newNode->next = current;
-                            newNode->prev = current->prev;
-                            current->prev->next = newNode;
-                            current->prev = newNode;
+                            insertMiddle(current, newNode);
                         }
                     }
         }
-    }
+    }   
     return sucess;
 }
 
-void LinkedList::insertHead(Node* head, Node* newNode){
+
+void LinkedList::insertHead(Node* newNode){
     head = newNode;
     newNode->prev = NULL;
     newNode->next = NULL;
 }
 
-void LinkedList::replaceHead(Node* head, Node* current, Node* newNode){
+void LinkedList::replaceHead(Node* current, Node* newNode){
     head = newNode;
     newNode->prev = NULL;
     newNode->next = current;
     current->prev = newNode;
 }
+
+void LinkedList::insertTail(Node* current, Node* newNode){
+    current->next = newNode;
+    newNode->next = NULL;
+    newNode->prev = current;
+}
+
+void LinkedList::insertMiddle(Node* current, Node* newNode){
+    newNode->next = current;
+    newNode->prev = current->prev;
+    current->prev->next = newNode;
+    current->prev = newNode;
+}
+
 
 
 bool LinkedList::deleteNode(int id){ // does not work
@@ -113,42 +123,30 @@ bool LinkedList::getNode(int id, Data* data){ // done
 }
 
 void LinkedList::printList(bool backward){ // needs shortenining
-//     Node* current = head;
-//     bool go = true; // used to execute the while loop at least once and until the und, do while doesnt cut it
-//     if(current == NULL){
-//         return;
-//     } else {
-//         while(go == true){
-//             if(backward == false){
-//                 std::cout << current->data.id << " : " << current->data.data << std::endl; // for printing last node
-//             }
-//             if(current->next == NULL){
-//                 go = false;
-//             } else {
-//                 go = true;
-//                 current = current->next;
-//             }
-//         }
-//         go = true;
-//         if(backward == true){
-//             while(go == true) {
-//                 std::cout << current->data.id << " : " << current->data.data << std::endl; // for printing last node
-//                 if(current->prev == NULL){
-//                     go = false;
-//                 } else {
-//                     go = true;
-//                     current = current->prev;
-//                 }
-//             }
-//         }
-//     }
- }
+    Node* current = head;
+    int index = 1;
+    while(current != NULL && current->next != NULL){
+        if(backward == false) {
+            std::cout << index << ": " << current->data.id << " : " << current->data.data << std::endl;
+        }
+        index++;
+        current = current->next;
+    }
+    if(backward == true){
+        index -= 1;
+        while(current != NULL && current->prev != NULL){
+            std::cout << index << ": " << current->data.id << " : " << current->data.data << std::endl;
+            index--;
+            current = current->prev;
+    }
+}
+}
 
 int LinkedList::getCount(){ // done
     Node* current = head;
     int nodes = 0;
-    bool go = true; // used to execute the while loop at least once and until the und, do while doesnt cut it
     if(current != NULL){
+        nodes++; // start at one cuz current = head
         while(current != NULL && current->next != NULL){
             current = current->next;
             nodes++;
@@ -160,7 +158,7 @@ int LinkedList::getCount(){ // done
 bool LinkedList::clearList(){ // have not done since i cant even delete one node yet
     return false;
 }
-bool LinkedList::exists(int id){ // done
+bool LinkedList::exists(int id){ // done, sike
     Node* current = head;
     bool go = true, success = false; // used to execute the while loop at least once and until the und, do while doesnt cut it
     if(current == NULL){
