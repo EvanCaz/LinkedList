@@ -29,9 +29,9 @@ bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation erro
                         Node* newNode = new Node;
                         newNode->data.id = id;
                         newNode->data.data = *ptr; // repetitive
-                        if (current->prev == NULL && current->data.id != id){ // replacing head
+                        if (current->prev == NULL && current->data.id > id){ // replacing head
                             replaceHead(current, newNode, id, &sucess);
-                        } else if (current->next == NULL){ // add tail
+                        } else if (current->next == NULL && id > current->data.id){ // add tail
                             insertTail(current, newNode, id, &sucess);
                         } else { // add midde
                             insertMiddle(current, newNode, &sucess, id);
@@ -57,33 +57,27 @@ void LinkedList::replaceHead(Node* current, Node* newNode, int id, bool* sucess)
         newNode->next = current;
         current->prev = newNode;
         *sucess = true;
-    } else {
-        *sucess = false;
-    }
+}
 }
 
 void LinkedList::insertTail(Node* current, Node* newNode, int id, bool* sucess){
-    if(current->data.id != id && current->prev != NULL){
+    if(current->data.id != id){
         if(current->next == NULL){}
         current->next = newNode;
         newNode->next = NULL;
         newNode->prev = current;
         *sucess = true;
-    } else {
-        *sucess = false;
-    }
+}
 }
 
 void LinkedList::insertMiddle(Node* current, Node* newNode, bool* sucess, int id){
-    if(current->prev->data.id != id && current->next->data.id != id && current->data.id != id){
+    if(id != current->data.id){
         newNode->next = current;
         newNode->prev = current->prev;
         current->prev->next = newNode;
         current->prev = newNode;
         *sucess = true;
-    } else {
-        *sucess = false;
-    }
+}
 }
 
 
@@ -108,12 +102,12 @@ bool LinkedList::deleteNode(int id){ // does not work
             } else if(current->next == NULL){ // deleting tail
                 // current->prev->next = NULL;
                 // delete current;
-                success = true;
+                //success = true;
             } else { // deleting middle
                 // current->prev->next = current->next;
                 // current->next->prev = current->prev;
                 // delete current;
-                success = true;
+                //success = true;
             }
         }
     }
@@ -146,7 +140,7 @@ void LinkedList::printList(bool backward){ // done
             std::cout << index << ": " << current->data.id << " : " << current->data.data << std::endl;
         }
         index++;
-        current = current->next; // still want to run to get current to the end
+        current = current->next; // still want to run to get current to the end to be used in backwards
     }
     if(current){
         std::cout << index << ": " << current->data.id << " : " << current->data.data << std::endl; // prints remainder
