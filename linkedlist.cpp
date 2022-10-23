@@ -12,23 +12,19 @@ LinkedList::LinkedList(){
     head = NULL;
 }
 
-bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation error, have not shortened with functions cuz idk where error is happening
+bool LinkedList::addNode(int id, string* ptr){ // done, =24
     bool sucess = false;
     if( id > 0 && !ptr->empty()){ // if id is 0 or greater and string is not empty...
         Node* current = head; // set a marker
         if(current == NULL){
-            Node* newNode = new Node;
-            newNode->data.id = id;
-            newNode->data.data = *ptr;
+            Node* newNode = createNode(id, ptr);
             insertHead(newNode, &sucess);
             } else {
                     while(current != NULL && current->next != NULL && current->data.id < id){
                         current = current->next;
                     }
                     if(current->data.id != id){
-                        Node* newNode = new Node;
-                        newNode->data.id = id;
-                        newNode->data.data = *ptr; 
+                        Node* newNode = createNode(id, ptr);
                         if (current->prev == NULL && current->data.id > id){ // replacing head
                             replaceHead(current, newNode, id, &sucess);
                         } else if (current->next == NULL && id > current->data.id){ // add tail
@@ -42,6 +38,13 @@ bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation erro
     return sucess;
 }
 
+Node* LinkedList::createNode(int id, string* ptr){
+    Node* newNode = new Node;
+    newNode->data.id = id;
+    newNode->data.data = *ptr;
+    return newNode;
+}
+
 
 void LinkedList::insertHead(Node* newNode, bool* sucess){
     head = newNode;
@@ -50,7 +53,7 @@ void LinkedList::insertHead(Node* newNode, bool* sucess){
     *sucess = true;
 }
 
-void LinkedList::replaceHead(Node* current, Node* newNode, int id, bool* sucess){ // fails when the duplicate is the first id added, not sure why
+void LinkedList::replaceHead(Node* current, Node* newNode, int id, bool* sucess){ 
     if(current->data.id != id){
         head = newNode;
         newNode->prev = NULL;
@@ -82,7 +85,7 @@ void LinkedList::insertMiddle(Node* current, Node* newNode, bool* sucess, int id
 
 
 
-bool LinkedList::deleteNode(int id) {
+bool LinkedList::deleteNode(int id) { // less than 24
   Node *current = head;
   bool success = false;
     if (id > 0 && current != NULL) {
@@ -106,7 +109,7 @@ bool LinkedList::deleteNode(int id) {
   return success;
 }
 
-void LinkedList::deleteHead(Node* current){
+void LinkedList::deleteHead(Node* current){ // done, <24
     if(current->next == NULL){
             head = NULL;
             delete current;
@@ -117,7 +120,7 @@ void LinkedList::deleteHead(Node* current){
         }
 }
 
-bool LinkedList::getNode(int id, Data* data){ // done
+bool LinkedList::getNode(int id, Data* data){ // done, <24
     Node* current = head;
     bool success = false; 
     if(current == NULL){
@@ -135,7 +138,7 @@ bool LinkedList::getNode(int id, Data* data){ // done
     return success;
 }
 
-void LinkedList::printList(bool backward){ // done
+void LinkedList::printList(bool backward){ // done, <24
     Node* current = head;
     int index = 1;
     while(current != NULL && current->next != NULL){
@@ -158,7 +161,7 @@ void LinkedList::printList(bool backward){ // done
     }
 }
 
-int LinkedList::getCount(){ // done
+int LinkedList::getCount(){ // done, <24
     Node* current = head;
     int nodes = 0;
     if(current != NULL){
@@ -171,7 +174,7 @@ int LinkedList::getCount(){ // done
     return nodes;
 }
 
-bool LinkedList::clearList(){ // have not done since i cant even delete one node yet
+bool LinkedList::clearList(){ // done, <24
     Node* current = head;
     bool success = false;
     head = NULL;
@@ -186,7 +189,7 @@ bool LinkedList::clearList(){ // have not done since i cant even delete one node
     return success;
 }
 
-bool LinkedList::exists(int id){ // done
+bool LinkedList::exists(int id){ // done, <24
     Node* current = head;
     bool success = false;
     while(success == false && current != NULL){

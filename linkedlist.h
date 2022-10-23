@@ -19,6 +19,8 @@ class LinkedList {
     void insertTail(Node*, Node*, int, bool*);
     void insertMiddle(Node*, Node*, bool*, int);
 
+    Node* createNode(int id, string* ptr);
+
     void deleteHead(Node*);
     // Node* createNode(int, string*); 
     public:
