@@ -19,7 +19,7 @@ bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation erro
         if(current == NULL){
             Node* newNode = new Node;
             newNode->data.id = id;
-            newNode->data.data = *ptr; // repetitive
+            newNode->data.data = *ptr;
             insertHead(newNode, &sucess);
             } else {
                     while(current != NULL && current->next != NULL && current->data.id < id){
@@ -28,7 +28,7 @@ bool LinkedList::addNode(int id, string* ptr){ // inconsistent segmentation erro
                     if(current->data.id != id){
                         Node* newNode = new Node;
                         newNode->data.id = id;
-                        newNode->data.data = *ptr; // repetitive
+                        newNode->data.data = *ptr; 
                         if (current->prev == NULL && current->data.id > id){ // replacing head
                             replaceHead(current, newNode, id, &sucess);
                         } else if (current->next == NULL && id > current->data.id){ // add tail
@@ -90,10 +90,16 @@ bool LinkedList::deleteNode(int id) {
         current = current->next;
     }
     if (current->prev == NULL && current->data.id == id) {
-        head = current->next;
-        current->next = NULL;
-        delete current;
-        success = true;
+        if(current->next == NULL){
+            head = NULL;
+            delete current;
+            success = true;
+        } else {
+            head = current->next;
+            current->next->prev = NULL;
+            delete current;
+            success = true;
+        }
     } else if (current->next == NULL && current->data.id == id) {
         current->prev->next = NULL;
         delete current;
@@ -164,14 +170,14 @@ int LinkedList::getCount(){ // done
 
 bool LinkedList::clearList(){ // have not done since i cant even delete one node yet
     Node* current = head;
-    head = NULL;
     bool success = false;
+    head = NULL;
     if(current != NULL){
-        while(current && current->next){
+        while(current->next != NULL){
             current = current->next;
             delete current->prev;
         }
-        delete current;
+        delete current; // delete remainder
         success = true;
     }
     return success;
