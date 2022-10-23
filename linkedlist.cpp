@@ -57,7 +57,7 @@ void LinkedList::replaceHead(Node* current, Node* newNode, int id, bool* sucess)
         newNode->next = current;
         current->prev = newNode;
         *sucess = true;
-}
+    }
 }
 
 void LinkedList::insertTail(Node* current, Node* newNode, int id, bool* sucess){
@@ -67,7 +67,7 @@ void LinkedList::insertTail(Node* current, Node* newNode, int id, bool* sucess){
         newNode->next = NULL;
         newNode->prev = current;
         *sucess = true;
-}
+    }
 }
 
 void LinkedList::insertMiddle(Node* current, Node* newNode, bool* sucess, int id){
@@ -77,41 +77,35 @@ void LinkedList::insertMiddle(Node* current, Node* newNode, bool* sucess, int id
         current->prev->next = newNode;
         current->prev = newNode;
         *sucess = true;
-}
-}
-
-
-
-bool LinkedList::deleteNode(int id){ // does not work
-    Node* current = head;
-    bool success = false;
-    if(id > 0 && current) {
-        while(current && current->data.id != id){
-            current = current->next;
-        }
-        if(current->data.id == id){
-            if(current->prev == NULL && current->next == NULL){ // deleting last head which is the only node in list
-                head = NULL;
-                delete current;
-                success = true;
-            } else if (current->prev == NULL) { // deleting head in a list with more than 1 nodes
-                // head = current->next;
-                // current->prev = NULL;
-                // delete current;
-                // success = true;
-            } else if(current->next == NULL){ // deleting tail
-                // current->prev->next = NULL;
-                // delete current;
-                //success = true;
-            } else { // deleting middle
-                // current->prev->next = current->next;
-                // current->next->prev = current->prev;
-                // delete current;
-                //success = true;
-            }
-        }
     }
-    return success;
+}
+
+
+
+bool LinkedList::deleteNode(int id) {
+  Node *current = head;
+  bool success = false;
+  if (id > 0 && current != NULL) {
+    while (current && current->next && current->data.id != id) {
+        current = current->next;
+    }
+    if (current->prev == NULL && current->data.id == id) {
+        head = current->next;
+        current->next = NULL;
+        delete current;
+        success = true;
+    } else if (current->next == NULL && current->data.id == id) {
+        current->prev->next = NULL;
+        delete current;
+        success = true;
+    } else if (current->prev && current->next) {
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+        delete current;
+        success = true;
+    }
+  }
+  return success;
 }
 
 bool LinkedList::getNode(int id, Data* data){ // done
@@ -169,8 +163,20 @@ int LinkedList::getCount(){ // done
 }
 
 bool LinkedList::clearList(){ // have not done since i cant even delete one node yet
-    return false;
+    Node* current = head;
+    head = NULL;
+    bool success = false;
+    if(current != NULL){
+        while(current && current->next){
+            current = current->next;
+            delete current->prev;
+        }
+        delete current;
+        success = true;
+    }
+    return success;
 }
+
 bool LinkedList::exists(int id){ // done
     Node* current = head;
     bool success = false;
