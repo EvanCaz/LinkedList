@@ -14,10 +14,10 @@
 class LinkedList {
     private:
     Node *head; // pointer for first node, null when empty list/no list
-    void insertHead(Node*);
-    void replaceHead(Node*, Node*);
-    void insertTail(Node*, Node*);
-    void insertMiddle(Node*, Node*);
+    void insertHead(Node*, bool*);
+    void replaceHead(Node*, Node*, int, bool*);
+    void insertTail(Node*, Node*, int, bool*);
+    void insertMiddle(Node*, Node*, bool*, int);
     Node* createNode(int, string*); 
     public: 
     LinkedList();
