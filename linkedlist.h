@@ -18,6 +18,8 @@ class LinkedList {
     void replaceHead(Node*, Node*, int, bool*);
     void insertTail(Node*, Node*, int, bool*);
     void insertMiddle(Node*, Node*, bool*, int);
+
+    void deleteHead(Node*);
     // Node* createNode(int, string*); 
     public:
     LinkedList();

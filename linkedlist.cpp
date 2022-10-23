@@ -85,33 +85,36 @@ void LinkedList::insertMiddle(Node* current, Node* newNode, bool* sucess, int id
 bool LinkedList::deleteNode(int id) {
   Node *current = head;
   bool success = false;
-  if (id > 0 && current != NULL) {
-    while (current && current->next && current->data.id != id) {
-        current = current->next;
-    }
-    if (current->prev == NULL && current->data.id == id) {
-        if(current->next == NULL){
-            head = NULL;
+    if (id > 0 && current != NULL) {
+        while (current && current->next && current->data.id != id) {
+            current = current->next;
+        }
+        if (current->prev == NULL && current->data.id == id) {
+            deleteHead(current);
+            success = true;
+        } else if (current->next == NULL && current->data.id == id) {
+            current->prev->next = NULL;
             delete current;
             success = true;
+        } else if (current->prev && current->next) {
+            current->prev->next = current->next;
+            current->next->prev = current->prev;
+            delete current;
+            success = true;
+        }
+    }
+  return success;
+}
+
+void LinkedList::deleteHead(Node* current){
+    if(current->next == NULL){
+            head = NULL;
+            delete current;
         } else {
             head = current->next;
             current->next->prev = NULL;
             delete current;
-            success = true;
         }
-    } else if (current->next == NULL && current->data.id == id) {
-        current->prev->next = NULL;
-        delete current;
-        success = true;
-    } else if (current->prev && current->next) {
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-        delete current;
-        success = true;
-    }
-  }
-  return success;
 }
 
 bool LinkedList::getNode(int id, Data* data){ // done
