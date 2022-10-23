@@ -18,8 +18,8 @@ class LinkedList {
     void replaceHead(Node*, Node*, int, bool*);
     void insertTail(Node*, Node*, int, bool*);
     void insertMiddle(Node*, Node*, bool*, int);
-    Node* createNode(int, string*); 
-    public: 
+    // Node* createNode(int, string*); 
+    public:
     LinkedList();
     // addNode, deleteNode, getNode, printList, getCount, clearList, exists
     // construcot and destrucot to allocate and deallocate memory

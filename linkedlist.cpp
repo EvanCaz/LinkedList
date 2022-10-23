@@ -60,7 +60,6 @@ void LinkedList::replaceHead(Node* current, Node* newNode, int id, bool* sucess)
     } else {
         *sucess = false;
     }
-        
 }
 
 void LinkedList::insertTail(Node* current, Node* newNode, int id, bool* sucess){
@@ -109,11 +108,11 @@ bool LinkedList::deleteNode(int id){ // does not work
             } else if(current->next == NULL){ // deleting tail
                 // current->prev->next = NULL;
                 // delete current;
-                // success = true;
+                success = true;
             } else { // deleting middle
-                current->prev->next = current->next;
-                current->next->prev = current->prev;
-                delete current;
+                // current->prev->next = current->next;
+                // current->next->prev = current->prev;
+                // delete current;
                 success = true;
             }
         }
