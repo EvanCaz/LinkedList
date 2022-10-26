@@ -21,10 +21,11 @@ class LinkedList {
 
     Node* createNode(int id, string* ptr);
 
-    void deleteHead(Node*);
+    void deleteHead(Node*); // could use one funcion for all of the deletions and use logic in there to determine where to add
     // Node* createNode(int, string*); 
     public:
     LinkedList();
+    ~LinkedList();
     // addNode, deleteNode, getNode, printList, getCount, clearList, exists
     // construcot and destrucot to allocate and deallocate memory
     bool addNode(int, string*);
@@ -43,7 +44,6 @@ class LinkedList {
     // deallocated and set head to null instead of the first node
     bool exists(int);
     // checks to see if given id corresponds with a node in the list
-
 };
 
 

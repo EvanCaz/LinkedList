@@ -11,6 +11,17 @@
 LinkedList::LinkedList(){
     head = NULL;
 }
+LinkedList::~LinkedList(){
+    Node* current = head;
+    head = NULL;
+    if(current != NULL){
+        while(current->next != NULL){
+            current = current->next;
+            delete current->prev;
+        }
+        delete current; // delete remainder
+    }
+}
 
 bool LinkedList::addNode(int id, string* ptr){ // done, =24
     bool sucess = false;
@@ -82,8 +93,6 @@ void LinkedList::insertMiddle(Node* current, Node* newNode, bool* sucess, int id
         *sucess = true;
     }
 }
-
-
 
 bool LinkedList::deleteNode(int id) { // less than 24
   Node *current = head;
