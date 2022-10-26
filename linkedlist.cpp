@@ -1,6 +1,5 @@
 /*********************
  * Evan Cazares
- * Assignment: coding06
 * doubly linked list with a head, no tail, and proper methods
 **********************/
 
